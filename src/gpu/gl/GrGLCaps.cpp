@@ -63,6 +63,9 @@ GrGLCaps::GrGLCaps(const GrContextOptions& contextOptions,
     fShaderCaps.reset(new GrShaderCaps(contextOptions));
 
     this->init(contextOptions, ctxInfo, glInterface);
+
+    // Vivante GC880: If this is set to true, fonts are scrambled.
+    fUnpackRowLengthSupport = false;
 }
 
 void GrGLCaps::init(const GrContextOptions& contextOptions,
@@ -636,7 +639,8 @@ const char* get_glsl_version_decl_string(GrGLStandard standard, GrGLSLGeneration
                 return "#version 100\n";
             } else {
                 SkASSERT(kGL_GrGLStandard == standard);
-                return "#version 110\n";
+                // Vivante GC880: Fails to parse version 110.
+                return "#version 100\n";
             }
         case k130_GrGLSLGeneration:
             SkASSERT(kGL_GrGLStandard == standard);
