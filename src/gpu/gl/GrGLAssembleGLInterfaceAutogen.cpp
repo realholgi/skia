@@ -51,6 +51,9 @@ sk_sp<const GrGLInterface> GrGLMakeAssembledGLInterface(void *ctx, GrGLGetProc g
         return nullptr;
     }
 
+    // GET_PROC returns nullptr on Vivante GC880, so remove it.
+    extensions.remove("GL_EXT_draw_instanced");
+
     sk_sp<GrGLInterface> interface(new GrGLInterface());
     GrGLInterface::Functions* functions = &interface->fFunctions;
 
